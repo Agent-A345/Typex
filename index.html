@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TYPEX — Typing Speed Test</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Scanline overlay -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <div class="app-wrapper">
+
+    <!-- ── HEADER ── -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">TYPE<span class="logo-accent">X</span></span>
+        <span class="logo-bracket">]</span>
+      </div>
+
+      <div class="header-controls">
+        <!-- Theme toggle -->
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle dark/light mode">
+          <span id="themeIcon">☀</span>
+        </button>
+        <!-- Sound toggle -->
+        <button class="icon-btn" id="soundToggle" title="Toggle sound" aria-label="Toggle sound">
+          <span id="soundIcon">♪</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ── STATS BAR (LIVE) ── -->
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-cell">
+        <span class="stat-value" id="wpmDisplay">0</span>
+        <span class="stat-label">WPM</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="accDisplay">100</span>
+        <span class="stat-label">ACC%</span>
+      </div>
+      <div class="stat-cell timer-cell">
+        <span class="stat-value timer-value" id="timerDisplay">60</span>
+        <span class="stat-label">SEC</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="errDisplay">0</span>
+        <span class="stat-label">ERR</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" id="charsDisplay">0</span>
+        <span class="stat-label">CHARS</span>
+      </div>
+    </div>
+
+    <!-- ── CONTROLS ── -->
+    <div class="controls-row">
+      <!-- Difficulty -->
+      <div class="btn-group" id="difficultyGroup" role="group" aria-label="Difficulty">
+        <button class="diff-btn active" data-diff="easy">EASY</button>
+        <button class="diff-btn" data-diff="medium">MEDIUM</button>
+        <button class="diff-btn" data-diff="hard">HARD</button>
+      </div>
+
+      <!-- Category -->
+      <div class="btn-group" id="categoryGroup" role="group" aria-label="Category">
+        <button class="cat-btn active" data-cat="general">GENERAL</button>
+        <button class="cat-btn" data-cat="programming">CODE</button>
+        <button class="cat-btn" data-cat="quotes">QUOTES</button>
+      </div>
+    </div>
+
+    <!-- ── TYPING AREA ── -->
+    <main class="typing-section">
+      <!-- Text passage display -->
+      <div class="passage-wrap" id="passageWrap" aria-live="polite">
+        <div class="passage" id="passageDisplay"></div>
+        <!-- ghost cursor line -->
+        <div class="passage-cursor" id="passageCursor"></div>
+      </div>
+
+      <!-- Input area -->
+      <div class="input-wrap">
+        <span class="prompt-symbol">▶</span>
+        <textarea
+          id="typingInput"
+          class="typing-input"
+          placeholder="Start typing to begin the test…"
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          rows="3"
+          aria-label="Typing input"
+        ></textarea>
+      </div>
+
+      <!-- Restart button -->
+      <div class="action-row">
+        <button class="restart-btn" id="restartBtn" aria-label="Restart test">
+          ↺ RESTART
+        </button>
+        <div class="best-wpm-badge" id="bestBadge" title="Your best WPM">
+          <span class="badge-label">BEST</span>
+          <span class="badge-value" id="bestWpmDisplay">—</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- ── RESULT OVERLAY ── -->
+    <div class="result-overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-label="Test results">
+      <div class="result-card">
+        <div class="result-header">
+          <span class="result-title">TEST COMPLETE</span>
+          <div class="result-line"></div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-metric">
+            <span class="rm-value" id="finalWpm">0</span>
+            <span class="rm-label">WPM</span>
+          </div>
+          <div class="result-metric highlight">
+            <span class="rm-value" id="finalAcc">0</span>
+            <span class="rm-label">ACCURACY %</span>
+          </div>
+          <div class="result-metric">
+            <span class="rm-value" id="finalErr">0</span>
+            <span class="rm-label">ERRORS</span>
+          </div>
+          <div class="result-metric">
+            <span class="rm-value" id="finalChars">0</span>
+            <span class="rm-label">CHARS</span>
+          </div>
+        </div>
+
+        <!-- Badges -->
+        <div class="badges-row" id="badgesRow"></div>
+
+        <!-- Weakness hint -->
+        <div class="weakness-box" id="weaknessBox"></div>
+
+        <!-- WPM mini chart -->
+        <div class="chart-section">
+          <div class="chart-label">WPM OVER TIME</div>
+          <div class="bar-chart" id="wpmChart"></div>
+        </div>
+
+        <!-- History -->
+        <div class="history-section">
+          <div class="history-label">RECENT SCORES</div>
+          <div class="history-list" id="historyList"></div>
+        </div>
+
+        <!-- Streak -->
+        <div class="streak-row" id="streakRow"></div>
+
+        <div class="result-actions">
+          <button class="restart-btn big" id="resultRestartBtn">↺ TRY AGAIN</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MINI DASHBOARD ── -->
+    <footer class="dashboard-footer">
+      <div class="dash-item">
+        <span class="dash-label">BEST WPM</span>
+        <span class="dash-val" id="dashBest">—</span>
+      </div>
+      <div class="dash-item">
+        <span class="dash-label">AVG WPM</span>
+        <span class="dash-val" id="dashAvg">—</span>
+      </div>
+      <div class="dash-item">
+        <span class="dash-label">STREAK</span>
+        <span class="dash-val" id="dashStreak">0</span>
+      </div>
+      <div class="dash-item">
+        <span class="dash-label">TESTS</span>
+        <span class="dash-val" id="dashTests">0</span>
+      </div>
+    </footer>
+
+  </div><!-- /app-wrapper -->
+
+  <script src="script.js"></script>
+</body>
+</html>
