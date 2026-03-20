@@ -1,14 +1,3 @@
-/**
- * TYPEX — Typing Speed Tester
- * Vanilla JS · No external dependencies
- * Features: WPM, accuracy, timer, difficulty, categories,
- *           localStorage, badges, weakness detection, WPM chart,
- *           sound feedback, dark/light mode, streak tracking.
- */
-
-/* ══════════════════════════════════════════════════════════
-   TEXT POOL
-══════════════════════════════════════════════════════════ */
 const TEXT_POOL = {
   easy: {
     general: [
